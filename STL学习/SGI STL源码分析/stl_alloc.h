@@ -1,20 +1,13 @@
-/*
- * Copyright (c) 1996-1997
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
+/**
+ * @file stl_alloc.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2025-05-14
+ * 
+ * @copyright Copyright (c) 2025
+ * 
  */
-
-/* NOTE: This is an internal header file, included by other STL headers.
- *   You should not attempt to use it directly.
- */
-
 #ifndef __SGI_STL_INTERNAL_ALLOC_H
 #define __SGI_STL_INTERNAL_ALLOC_H
 
@@ -30,13 +23,6 @@
 #  define __USE_MALLOC
 #endif
 
-
-// This implements some standard node allocators.  These are
-// NOT the same as the allocators in the C++ draft standard or in
-// in the original STL.  They do not encapsulate different pointer
-// types; indeed we assume that there is only one pointer type.
-// The allocation primitives are intended to allocate individual objects,
-// not larger arenas as with the original STL allocators.
 
 #ifndef __THROW_BAD_ALLOC
 #  if defined(__STL_NO_BAD_ALLOC) || !defined(__STL_USE_EXCEPTIONS)

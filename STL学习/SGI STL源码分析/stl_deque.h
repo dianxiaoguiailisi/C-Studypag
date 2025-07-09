@@ -1,71 +1,11 @@
-/*
- *
- * Copyright (c) 1994
- * Hewlett-Packard Company
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Hewlett-Packard Company makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- *
- *
- * Copyright (c) 1997
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
-
-/* NOTE: This is an internal header file, included by other STL headers.
- *   You should not attempt to use it directly.
- */
+//
 
 #include <concept_checks.h>
 
 #ifndef __SGI_STL_INTERNAL_DEQUE_H
 #define __SGI_STL_INTERNAL_DEQUE_H
 
-/* Class invariants:
- *  For any nonsingular iterator i:
- *    i.node is the address of an element in the map array.  The
- *      contents of i.node is a pointer to the beginning of a node.
- *    i.first == *(i.node) 
- *    i.last  == i.first + node_size
- *    i.cur is a pointer in the range [i.first, i.last).  NOTE:
- *      the implication of this is that i.cur is always a dereferenceable
- *      pointer, even if i is a past-the-end iterator.
- *  Start and Finish are always nonsingular iterators.  NOTE: this means
- *    that an empty deque must have one node, and that a deque
- *    with N elements, where N is the buffer size, must have two nodes.
- *  For every node other than start.node and finish.node, every element
- *    in the node is an initialized object.  If start.node == finish.node,
- *    then [start.cur, finish.cur) are initialized objects, and
- *    the elements outside that range are uninitialized storage.  Otherwise,
- *    [start.cur, start.last) and [finish.first, finish.cur) are initialized
- *    objects, and [start.first, start.cur) and [finish.cur, finish.last)
- *    are uninitialized storage.
- *  [map, map + map_size) is a valid, non-empty range.  
- *  [start.node, finish.node] is a valid range contained within 
- *    [map, map + map_size).  
- *  A pointer in the range [map, map + map_size) points to an allocated node
- *    if and only if the pointer is in the range [start.node, finish.node].
- */
-
-
-/*
- * In previous versions of deque, there was an extra template 
- * parameter so users could control the node size.  This extension
- * turns out to violate the C++ standard (it can be detected using
- * template template parameters), and it has been removed.
- */
+///
 
 __STL_BEGIN_NAMESPACE 
 
@@ -74,8 +14,6 @@ __STL_BEGIN_NAMESPACE
 #pragma set woff 1375
 #endif
 
-// Note: this function is simply a kludge to work around several compilers'
-//  bugs in handling constant expressions.
 inline size_t __deque_buf_size(size_t __size) {
   return __size < 512 ? size_t(512 / __size) : size_t(1);
 }

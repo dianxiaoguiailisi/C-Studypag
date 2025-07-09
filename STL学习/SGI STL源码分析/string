@@ -1,15 +1,3 @@
-/*
- * Copyright (c) 1997-1999
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */ 
 
 #ifndef __SGI_STL_STRING
 #define __SGI_STL_STRING
@@ -29,28 +17,6 @@
 #else /* __STL_USE_NEW_IOSTREAMS */
 #include <char_traits.h>
 #endif /* __STL_USE_NEW_IOSTREAMS */
-
-// Standard C++ string class.  This class has performance
-// characteristics very much like vector<>, meaning, for example, that
-// it does not perform reference-count or copy-on-write, and that
-// concatenation of two strings is an O(N) operation. 
-
-// There are three reasons why basic_string is not identical to
-// vector.  First, basic_string always stores a null character at the
-// end; this makes it possible for c_str to be a fast operation.
-// Second, the C++ standard requires basic_string to copy elements
-// using char_traits<>::assign, char_traits<>::copy, and
-// char_traits<>::move.  This means that all of vector<>'s low-level
-// operations must be rewritten.  Third, basic_string<> has a lot of
-// extra functions in its interface that are convenient but, strictly
-// speaking, redundant.
-
-// Additionally, the C++ standard imposes a major restriction: according
-// to the standard, the character type _CharT must be a POD type.  This
-// implementation weakens that restriction, and allows _CharT to be a
-// a user-defined non-POD type.  However, _CharT must still have a
-// default constructor.
-
 __STL_BEGIN_NAMESPACE
 
 #if defined(__sgi) && !defined(__GNUC__) && (_MIPS_SIM != _MIPS_SIM_ABI32)
@@ -241,24 +207,6 @@ template <class _Tp, class _Alloc>
 void _String_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
   __STL_THROW(out_of_range("basic_string"));
 }
-
-
-// ------------------------------------------------------------
-// Class basic_string.  
-
-// Class invariants:
-// (1) [start, finish) is a valid range.
-// (2) Each iterator in [start, finish) points to a valid object
-//     of type value_type.
-// (3) *finish is a valid object of type value_type; in particular,
-//     it is value_type().
-// (4) [finish + 1, end_of_storage) is a valid range.
-// (5) Each iterator in [finish + 1, end_of_storage) points to 
-//     unininitialized memory.
-
-// Note one important consequence: a string of length n must manage
-// a block of memory whose size is at least n + 1.  
-
 
 template <class _CharT, class _Traits, class _Alloc> 
 class basic_string : private _String_base<_CharT,_Alloc> {

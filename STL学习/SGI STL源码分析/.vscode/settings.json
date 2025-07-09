@@ -59,6 +59,11 @@
   "files.associations": {
     "string": "cpp",
     "string_view": "cpp",
-    "tuple": "cpp"
+    "tuple": "cpp",
+    "pthread_alloc": "cpp",
+    "deque": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "memory_resource": "cpp"
   }
 }

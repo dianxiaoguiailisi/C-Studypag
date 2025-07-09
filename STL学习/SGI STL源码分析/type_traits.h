@@ -1,15 +1,12 @@
-/*
- *
- * Copyright (c) 1997
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
+/**
+ * @file type_traits.h
+ * @author zx
+ * @brief 萃取迭代器型别的特性，帮助对构造、析构、拷贝等操作的效率最大化
+ * @version 0.1
+ * @date 2025-05-23
+ * 
+ * @copyright Copyright (c) 2025
+ * 
  */
 
 #ifndef __TYPE_TRAITS_H
@@ -18,78 +15,24 @@
 #ifndef __STL_CONFIG_H
 #include <stl_config.h>
 #endif
-
-/*
-This header file provides a framework for allowing compile time dispatch
-based on type attributes. This is useful when writing template code.
-For example, when making a copy of an array of an unknown type, it helps
-to know if the type has a trivial copy constructor or not, to help decide
-if a memcpy can be used.
-
-The class template __type_traits provides a series of typedefs each of
-which is either __true_type or __false_type. The argument to
-__type_traits can be any type. The typedefs within this template will
-attain their correct values by one of these means:
-    1. The general instantiation contain conservative values which work
-       for all types.
-    2. Specializations may be declared to make distinctions between types.
-    3. Some compilers (such as the Silicon Graphics N32 and N64 compilers)
-       will automatically provide the appropriate specializations for all
-       types.
-
-EXAMPLE:
-
-//Copy an array of elements which have non-trivial copy constructors
-template <class T> void copy(T* source, T* destination, int n, __false_type);
-//Copy an array of elements which have trivial copy constructors. Use memcpy.
-template <class T> void copy(T* source, T* destination, int n, __true_type);
-
-//Copy an array of any type by using the most efficient copy mechanism
-template <class T> inline void copy(T* source,T* destination,int n) {
-   copy(source, destination, n,
-        typename __type_traits<T>::has_trivial_copy_constructor());
-}
-*/
-
-
+//判断真假传会的结构，用来标注真假
 struct __true_type {
 };
 
 struct __false_type {
 };
 
+//保守定义为__true_type之后，在针对每一个标量型别特化
 template <class _Tp>
 struct __type_traits { 
-   typedef __true_type     this_dummy_member_must_be_first;
-                   /* Do not remove this member. It informs a compiler which
-                      automatically specializes __type_traits that this
-                      __type_traits template is special. It just makes sure that
-                      things work if an implementation is using a template
-                      called __type_traits for something unrelated. */
-
-   /* The following restrictions should be observed for the sake of
-      compilers which automatically produce type specific specializations 
-      of this class:
-          - You may reorder the members below if you wish
-          - You may remove any of the members below if you wish
-          - You must not rename members without making the corresponding
-            name change in the compiler
-          - Members you add will be treated like regular members unless
-            you add the appropriate support in the compiler. */
- 
-
-   typedef __false_type    has_trivial_default_constructor;
-   typedef __false_type    has_trivial_copy_constructor;
+   typedef __true_type     this_dummy_member_must_be_first;//占位
+   typedef __false_type    has_trivial_default_constructor;//对象是否平凡构造函数
+   typedef __false_type    has_trivial_copy_constructor;//对象是否拥有拷贝构造函数
    typedef __false_type    has_trivial_assignment_operator;
-   typedef __false_type    has_trivial_destructor;
-   typedef __false_type    is_POD_type;
+   typedef __false_type    has_trivial_destructor;//析构函数
+   typedef __false_type    is_POD_type;//是否是POD类型
 };
 
-
-
-// Provide some specializations.  This is harmless for compilers that
-//  have built-in __types_traits support, and essential for compilers
-//  that don't.
 
 #ifndef __STL_NO_BOOL
 
@@ -102,7 +45,7 @@ __STL_TEMPLATE_NULL struct __type_traits<bool> {
 };
 
 #endif /* __STL_NO_BOOL */
-
+//char类型的全特化
 __STL_TEMPLATE_NULL struct __type_traits<char> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;
@@ -110,7 +53,7 @@ __STL_TEMPLATE_NULL struct __type_traits<char> {
    typedef __true_type    has_trivial_destructor;
    typedef __true_type    is_POD_type;
 };
-
+//signed char的全特化
 __STL_TEMPLATE_NULL struct __type_traits<signed char> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;
@@ -118,7 +61,7 @@ __STL_TEMPLATE_NULL struct __type_traits<signed char> {
    typedef __true_type    has_trivial_destructor;
    typedef __true_type    is_POD_type;
 };
-
+//unsigned char的全特化
 __STL_TEMPLATE_NULL struct __type_traits<unsigned char> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;
@@ -138,7 +81,9 @@ __STL_TEMPLATE_NULL struct __type_traits<wchar_t> {
 };
 
 #endif /* __STL_HAS_WCHAR_T */
-
+//针对整数类型的特化：
+//1.有符号整数：short、int、long
+//2.无符号整数:unsigned short、unsigned int、unsigned long
 __STL_TEMPLATE_NULL struct __type_traits<short> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;
@@ -206,7 +151,8 @@ __STL_TEMPLATE_NULL struct __type_traits<unsigned long long> {
 };
 
 #endif /* __STL_LONG_LONG */
-
+//浮点数类型的特化
+//1. float、double 、long double 
 __STL_TEMPLATE_NULL struct __type_traits<float> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;
@@ -244,6 +190,10 @@ struct __type_traits<_Tp*> {
 
 #else /* __STL_CLASS_PARTIAL_SPECIALIZATION */
 
+
+//这六个结构体是对__type_traits模板的全特化，分别针对以下指针类型：
+//普通指针：char*、signed char*、unsigned char*
+//常量指针：const char*、const signed char*、const unsigned char*
 __STL_TEMPLATE_NULL struct __type_traits<char*> {
    typedef __true_type    has_trivial_default_constructor;
    typedef __true_type    has_trivial_copy_constructor;

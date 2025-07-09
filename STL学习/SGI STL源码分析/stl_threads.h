@@ -1,28 +1,5 @@
-/*
- * Copyright (c) 1997-1999
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
-
-// WARNING: This is an internal header file, included by other C++
-// standard library headers.  You should not attempt to use this header
-// file directly.
-// Stl_config.h should be included before this file.
-
 #ifndef __SGI_STL_INTERNAL_THREADS_H
 #define __SGI_STL_INTERNAL_THREADS_H
-
-// Supported threading models are native SGI, pthreads, uithreads
-// (similar to pthreads, but based on an earlier draft of the Posix
-// threads standard), and Win32 threads.  Uithread support by Jochen
-// Schlick, 1999.
 
 #if defined(__STL_SGI_THREADS)
 #include <mutex.h>
@@ -37,12 +14,6 @@
 #endif
 
 __STL_BEGIN_NAMESPACE
-
-
-// Class _Refcount_Base provides a type, _RC_t, a data member,
-// _M_ref_count, and member functions _M_incr and _M_decr, which perform
-// atomic preincrement/predecrement.  The constructor initializes 
-// _M_ref_count.
 
 // Hack for SGI o32 compilers.
 #if defined(__STL_SGI_THREADS) && !defined(__add_and_fetch) && \

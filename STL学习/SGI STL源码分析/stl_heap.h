@@ -1,32 +1,3 @@
-/*
- *
- * Copyright (c) 1994
- * Hewlett-Packard Company
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Hewlett-Packard Company makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- *
- * Copyright (c) 1997
- * Silicon Graphics Computer Systems, Inc.
- *
- * Permission to use, copy, modify, distribute and sell this software
- * and its documentation for any purpose is hereby granted without fee,
- * provided that the above copyright notice appear in all copies and
- * that both that copyright notice and this permission notice appear
- * in supporting documentation.  Silicon Graphics makes no
- * representations about the suitability of this software for any
- * purpose.  It is provided "as is" without express or implied warranty.
- */
-
-/* NOTE: This is an internal header file, included by other STL headers.
- *   You should not attempt to use it directly.
- */
-
 #ifndef __SGI_STL_INTERNAL_HEAP_H
 #define __SGI_STL_INTERNAL_HEAP_H
 
@@ -39,9 +10,7 @@ __STL_BEGIN_NAMESPACE
 // Heap-manipulation functions: push_heap, pop_heap, make_heap, sort_heap.
 
 template <class _RandomAccessIterator, class _Distance, class _Tp>
-void 
-__push_heap(_RandomAccessIterator __first,
-            _Distance __holeIndex, _Distance __topIndex, _Tp __value)
+void __push_heap(_RandomAccessIterator __first,  _Distance __holeIndex, _Distance __topIndex, _Tp __value)
 {
   _Distance __parent = (__holeIndex - 1) / 2;
   while (__holeIndex > __topIndex && *(__first + __parent) < __value) {
